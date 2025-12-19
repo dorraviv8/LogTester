@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: docker.io/dorraviv/logtester-api
+  tag: "dev"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+
+resources: {}
+

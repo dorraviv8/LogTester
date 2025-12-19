@@ -1,0 +1,62 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE_NAME = "logtester-api"
+    DOCKERHUB_USER = credentials('dockerhub-username') // Secret Text / Username
+    DOCKERHUB_PASS = credentials('dockerhub-password') // Secret Text / Password
+    REGISTRY = "docker.io"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Unit Tests (pytest)') {
+      steps {
+        dir('apps/api') {
+          sh '''
+            python3 -m venv .venv
+            . .venv/bin/activate
+            pip install -r requirements.txt
+            pytest -q
+          '''
+        }
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        script {
+          def shortSha = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+          env.TAG = shortSha
+        }
+        dir('apps/api') {
+          sh '''
+            docker build -t ${REGISTRY}/${DOCKERHUB_USER}/${IMAGE_NAME}:${TAG} .
+            docker tag ${REGISTRY}/${DOCKERHUB_USER}/${IMAGE_NAME}:${TAG} ${REGISTRY}/${DOCKERHUB_USER}/${IMAGE_NAME}:latest
+          '''
+        }
+      }
+    }
+
+    stage('Push Docker Image') {
+      steps {
+        sh '''
+          echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+          docker push ${REGISTRY}/${DOCKERHUB_USER}/${IMAGE_NAME}:${TAG}
+          docker push ${REGISTRY}/${DOCKERHUB_USER}/${IMAGE_NAME}:latest
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'docker logout || true'
+      cleanWs()
+    }
+  }
+}
+
