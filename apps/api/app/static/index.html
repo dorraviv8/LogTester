@@ -12,7 +12,9 @@
     .grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
     @media (min-width: 900px){ .grid { grid-template-columns: 1.2fr 0.8fr; } }
     .card { background: #121a2a; border: 1px solid #202a40; border-radius: 14px; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+
     textarea { width: 100%; min-height: 260px; resize: vertical; border-radius: 12px; border: 1px solid #2a3550; background: #0e1525; color: #e7eaf3; padding: 12px; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 13px; }
+
     label { display: block; margin: 0 0 8px; color: #c9cfe3; font-weight: 600; }
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
     select, button, input { border-radius: 12px; border: 1px solid #2a3550; background: #0e1525; color: #e7eaf3; padding: 10px 12px; }
@@ -20,53 +22,32 @@
     button.primary { background: #2d6cff; border-color: #2d6cff; }
     button.primary:disabled { opacity: 0.6; cursor: not-allowed; }
     .hint { color: #aab1c5; font-size: 13px; }
-    pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: #0e1525; border: 1px solid #2a3550; border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.35; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 12.5px; }
+
     .pill { display:inline-block; padding: 6px 10px; border-radius: 999px; background:#0e1525; border:1px solid #2a3550; color:#c9cfe3; font-size:12px; }
     .ok { color:#7ee787; }
     .bad { color:#ff7b72; }
 
-    /* ✅ NEW: result rendering styles */
-    .resultEmpty {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #0e1525;
-      border: 1px solid #2a3550;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 13px;
-      line-height: 1.35;
-      color: #c9cfe3;
-    }
-    .cardResult { background: #0e1525; border: 1px solid #2a3550; border-radius: 14px; padding: 14px; }
-    .cardHeader { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-    .rTitle { font-size: 16px; font-weight: 800; margin: 0 0 4px; }
-    .rSub { font-size: 13px; color: #aab1c5; line-height: 1.35; }
-    .section { margin-top: 12px; }
-    .sectionTitle { font-weight: 800; font-size: 12px; letter-spacing: .2px; color: #c9cfe3; margin-bottom: 6px; text-transform: uppercase; }
-    .text { white-space: pre-wrap; line-height: 1.5; color: #e7eaf3; }
-    .code {
-      background: #0b1020;
-      color: #e6e6e6;
-      padding: 12px;
-      border-radius: 12px;
-      overflow: auto;
-      border: 1px solid #2a3550;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12.5px;
-      white-space: pre;
-    }
-    .bullets { margin: 0; padding-left: 18px; }
-    .bullets li { margin: 6px 0; color: #e7eaf3; }
-    .muted { color: #aab1c5; font-size: 13px; }
+    /* Result UI */
+    .resultEmpty { color:#aab1c5; font-size: 13px; }
+    .resultHead { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+    .badge { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid #2a3550; background:#0e1525; font-size:12px; }
+    .badge strong { font-weight:800; }
+    .confBar { height:8px; width:120px; border-radius:999px; background:#0b0f19; border:1px solid #2a3550; overflow:hidden; }
+    .confFill { height:100%; width:0%; background:#2d6cff; }
 
-    .badge { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid #2a3550; white-space: nowrap; background: #0e1525; color: #c9cfe3; }
-    .badge.high { background: rgba(126,231,135,.12); border-color: rgba(126,231,135,.45); color: #7ee787; }
-    .badge.mid  { background: rgba(255,215,102,.10); border-color: rgba(255,215,102,.40); color: #ffd766; }
-    .badge.low  { background: rgba(255,123,114,.10); border-color: rgba(255,123,114,.40); color: #ff7b72; }
+    .section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #202a40; }
+    .sectionTitle { font-size: 13px; color:#c9cfe3; font-weight:800; letter-spacing:0.2px; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+    .sectionBody { color:#e7eaf3; font-size: 13px; line-height: 1.45; }
+    .muted { color:#aab1c5; }
 
-    details.details { margin-top: 12px; }
-    details.details summary { cursor: pointer; color: #9db7ff; user-select: none; }
-    details.details summary:hover { text-decoration: underline; }
+    .steps { margin: 8px 0 0; padding-left: 18px; }
+    .steps li { margin: 6px 0; }
+    .monoBox { margin-top: 8px; white-space: pre-wrap; word-break: break-word; background: #0e1525; border: 1px solid #2a3550; border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; }
+    .twoCol { display:grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 900px){ .twoCol { grid-template-columns: 1fr 1fr; } }
+
+    .warn { color:#ffd36a; }
   </style>
 </head>
 <body>
@@ -104,8 +85,19 @@
 
       <div class="card">
         <label>Result</label>
-        <!-- ✅ changed from <pre> to <div> so we can render nice HTML -->
-        <div id="result" class="resultEmpty">Waiting for input...</div>
+
+        <!-- Instead of <pre>, we render structured output -->
+        <div id="result">
+          <div class="resultEmpty">Waiting for input…</div>
+        </div>
+
+        <!-- Optional: raw JSON toggle -->
+        <div class="row" style="margin-top:10px;">
+          <label class="hint" style="margin:0;">
+            <input type="checkbox" id="rawToggle" /> Show raw JSON
+          </label>
+        </div>
+        <div id="rawBox" class="monoBox" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -118,6 +110,8 @@
   const resultEl = document.getElementById("result");
   const statusEl = document.getElementById("status");
   const apiHealthEl = document.getElementById("apiHealth");
+  const rawToggle = document.getElementById("rawToggle");
+  const rawBox = document.getElementById("rawBox");
 
   async function checkHealth(){
     try {
@@ -132,93 +126,102 @@
     }
   }
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  function escHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
   }
 
-  function pct(n) {
-    if (n === null || n === undefined || Number.isNaN(Number(n))) return "N/A";
-    const v = Math.round(Number(n) * 100);
-    return `${v}%`;
+  function normalizeFixes(fixes){
+    if(!fixes) return [];
+    if(Array.isArray(fixes)) return fixes.filter(Boolean);
+    // support string fixes
+    const s = String(fixes).trim();
+    if(!s) return [];
+    // split by newline or bullet-like separators
+    return s.split(/\n|•|- /).map(x => x.trim()).filter(Boolean);
   }
 
-  function confidenceBadge(conf) {
-    const v = Number(conf ?? 0);
-    let cls = "badge low";
-    if (v >= 0.75) cls = "badge high";
-    else if (v >= 0.45) cls = "badge mid";
-    return `<span class="${cls}">Confidence: ${pct(v)}</span>`;
+  function asPercent(conf){
+    // conf might be 0..1 or 0..100
+    const n = Number(conf);
+    if(Number.isNaN(n)) return 0;
+    return n <= 1 ? Math.round(n * 100) : Math.max(0, Math.min(100, Math.round(n)));
   }
 
-  function renderResult(data) {
-    // remove "empty" styling
-    resultEl.className = "";
-
-    const fixes = Array.isArray(data.suggested_fixes) ? data.suggested_fixes : [];
-    const lines = Array.isArray(data.extracted_error_lines) ? data.extracted_error_lines : [];
+  function renderResult(data){
+    const errorType = data?.error_type || "unknown";
+    const summary = data?.root_cause_summary || "";
+    const cause = data?.most_likely_cause || "";
+    const fixes = normalizeFixes(data?.suggested_fixes);
+    const extracted = Array.isArray(data?.extracted_error_lines) ? data.extracted_error_lines : [];
+    const confPct = asPercent(data?.confidence);
 
     const fixesHtml = fixes.length
-      ? `<ul class="bullets">${fixes.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`
-      : `<div class="muted">No suggested fixes found.</div>`;
+      ? `<ol class="steps">${fixes.map(x => `<li>${escHtml(x)}</li>`).join("")}</ol>`
+      : `<div class="muted">No concrete steps returned. Try changing “Source” or paste more log context.</div>`;
 
-    const linesHtml = lines.length
-      ? `<pre class="code">${escapeHtml(lines.join("\n"))}</pre>`
-      : `<div class="muted">No error lines extracted.</div>`;
+    const extractedHtml = extracted.length
+      ? `<div class="monoBox">${escHtml(extracted.join("\n"))}</div>`
+      : `<div class="muted">No extracted lines.</div>`;
 
-    const html = `
-      <div class="cardResult">
-        <div class="cardHeader">
-          <div>
-            <div class="rTitle">${escapeHtml(data.error_type || "Unknown error")}</div>
-            <div class="rSub">${escapeHtml(data.most_likely_cause || "")}</div>
+    resultEl.innerHTML = `
+      <div class="resultHead">
+        <div class="badge"><strong>Error:</strong> <span class="${errorType === 'unknown' ? 'warn' : ''}">${escHtml(errorType)}</span></div>
+        <div class="badge">
+          <strong>Confidence:</strong> ${confPct}%
+          <span class="confBar"><span class="confFill" style="width:${confPct}%"></span></span>
+        </div>
+      </div>
+
+      <div class="twoCol">
+        <div class="section" style="margin-top:0; padding-top:0; border-top:none;">
+          <div class="sectionTitle">Explanation</div>
+          <div class="sectionBody">${summary ? escHtml(summary) : `<span class="muted">No summary returned.</span>`}</div>
+
+          <div class="section">
+            <div class="sectionTitle">Most likely cause</div>
+            <div class="sectionBody">${cause ? escHtml(cause) : `<span class="muted">No cause returned.</span>`}</div>
           </div>
-          ${confidenceBadge(data.confidence)}
         </div>
 
-        <div class="section">
-          <div class="sectionTitle">Root cause summary</div>
-          <div class="text">${escapeHtml(data.root_cause_summary || "")}</div>
-        </div>
-
-        <div class="section">
-          <div class="sectionTitle">Suggested fixes</div>
+        <div class="section" style="margin-top:0; padding-top:0; border-top:none;">
+          <div class="sectionTitle">What to do (steps)</div>
           ${fixesHtml}
         </div>
+      </div>
 
-        <div class="section">
-          <div class="sectionTitle">Extracted error lines</div>
-          ${linesHtml}
-        </div>
-
-        <details class="details">
-          <summary>Raw JSON</summary>
-          <pre class="code">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
-        </details>
+      <div class="section">
+        <div class="sectionTitle">Extracted lines</div>
+        ${extractedHtml}
       </div>
     `;
-
-    resultEl.innerHTML = html;
   }
 
-  function renderText(msg) {
-    resultEl.className = "resultEmpty";
-    resultEl.textContent = msg;
+  function pretty(obj){
+    return JSON.stringify(obj, null, 2);
   }
+
+  rawToggle.addEventListener("change", () => {
+    rawBox.style.display = rawToggle.checked ? "block" : "none";
+  });
 
   btn.addEventListener("click", async () => {
     const text = (logEl.value || "").trim();
     if(!text){
-      renderText("Paste a log first.");
+      resultEl.innerHTML = `<div class="resultEmpty">Paste a log first.</div>`;
       return;
     }
+
     btn.disabled = true;
     statusEl.textContent = "Analyzing...";
-    renderText("Working...");
+    resultEl.innerHTML = `<div class="resultEmpty">Working…</div>`;
+    rawBox.textContent = "";
+    rawToggle.checked = false;
+    rawBox.style.display = "none";
 
     try {
       const r = await fetch("/analyze", {
@@ -227,11 +230,14 @@
         body: JSON.stringify({ log_text: text, source: sourceEl.value })
       });
 
-      const data = await r.json();
+      const data = await r.json().catch(() => ({}));
+      rawBox.textContent = pretty(data);
 
       if(!r.ok){
-        // show error in a readable way
-        renderText("Request failed:\n\n" + JSON.stringify(data, null, 2));
+        resultEl.innerHTML = `
+          <div class="badge bad"><strong>Request failed</strong></div>
+          <div class="monoBox">${escHtml(pretty(data))}</div>
+        `;
         statusEl.textContent = "Request failed.";
         return;
       }
@@ -239,7 +245,7 @@
       renderResult(data);
       statusEl.textContent = "Done.";
     } catch (e){
-      renderText("Network error: " + String(e));
+      resultEl.innerHTML = `<div class="badge bad"><strong>Network error</strong> ${escHtml(String(e))}</div>`;
       statusEl.textContent = "Failed.";
     } finally {
       btn.disabled = false;
@@ -249,8 +255,11 @@
 
   clearBtn.addEventListener("click", () => {
     logEl.value = "";
-    renderText("Waiting for input...");
+    resultEl.innerHTML = `<div class="resultEmpty">Waiting for input…</div>`;
     statusEl.textContent = "";
+    rawBox.textContent = "";
+    rawToggle.checked = false;
+    rawBox.style.display = "none";
   });
 
   checkHealth();
