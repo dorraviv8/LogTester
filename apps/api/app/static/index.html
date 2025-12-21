@@ -24,6 +24,49 @@
     .pill { display:inline-block; padding: 6px 10px; border-radius: 999px; background:#0e1525; border:1px solid #2a3550; color:#c9cfe3; font-size:12px; }
     .ok { color:#7ee787; }
     .bad { color:#ff7b72; }
+
+    /* ✅ NEW: result rendering styles */
+    .resultEmpty {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0e1525;
+      border: 1px solid #2a3550;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #c9cfe3;
+    }
+    .cardResult { background: #0e1525; border: 1px solid #2a3550; border-radius: 14px; padding: 14px; }
+    .cardHeader { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .rTitle { font-size: 16px; font-weight: 800; margin: 0 0 4px; }
+    .rSub { font-size: 13px; color: #aab1c5; line-height: 1.35; }
+    .section { margin-top: 12px; }
+    .sectionTitle { font-weight: 800; font-size: 12px; letter-spacing: .2px; color: #c9cfe3; margin-bottom: 6px; text-transform: uppercase; }
+    .text { white-space: pre-wrap; line-height: 1.5; color: #e7eaf3; }
+    .code {
+      background: #0b1020;
+      color: #e6e6e6;
+      padding: 12px;
+      border-radius: 12px;
+      overflow: auto;
+      border: 1px solid #2a3550;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12.5px;
+      white-space: pre;
+    }
+    .bullets { margin: 0; padding-left: 18px; }
+    .bullets li { margin: 6px 0; color: #e7eaf3; }
+    .muted { color: #aab1c5; font-size: 13px; }
+
+    .badge { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid #2a3550; white-space: nowrap; background: #0e1525; color: #c9cfe3; }
+    .badge.high { background: rgba(126,231,135,.12); border-color: rgba(126,231,135,.45); color: #7ee787; }
+    .badge.mid  { background: rgba(255,215,102,.10); border-color: rgba(255,215,102,.40); color: #ffd766; }
+    .badge.low  { background: rgba(255,123,114,.10); border-color: rgba(255,123,114,.40); color: #ff7b72; }
+
+    details.details { margin-top: 12px; }
+    details.details summary { cursor: pointer; color: #9db7ff; user-select: none; }
+    details.details summary:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -61,7 +104,8 @@
 
       <div class="card">
         <label>Result</label>
-        <pre id="result">Waiting for input...</pre>
+        <!-- ✅ changed from <pre> to <div> so we can render nice HTML -->
+        <div id="result" class="resultEmpty">Waiting for input...</div>
       </div>
     </div>
   </div>
@@ -88,19 +132,93 @@
     }
   }
 
-  function pretty(obj){
-    return JSON.stringify(obj, null, 2);
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function pct(n) {
+    if (n === null || n === undefined || Number.isNaN(Number(n))) return "N/A";
+    const v = Math.round(Number(n) * 100);
+    return `${v}%`;
+  }
+
+  function confidenceBadge(conf) {
+    const v = Number(conf ?? 0);
+    let cls = "badge low";
+    if (v >= 0.75) cls = "badge high";
+    else if (v >= 0.45) cls = "badge mid";
+    return `<span class="${cls}">Confidence: ${pct(v)}</span>`;
+  }
+
+  function renderResult(data) {
+    // remove "empty" styling
+    resultEl.className = "";
+
+    const fixes = Array.isArray(data.suggested_fixes) ? data.suggested_fixes : [];
+    const lines = Array.isArray(data.extracted_error_lines) ? data.extracted_error_lines : [];
+
+    const fixesHtml = fixes.length
+      ? `<ul class="bullets">${fixes.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`
+      : `<div class="muted">No suggested fixes found.</div>`;
+
+    const linesHtml = lines.length
+      ? `<pre class="code">${escapeHtml(lines.join("\n"))}</pre>`
+      : `<div class="muted">No error lines extracted.</div>`;
+
+    const html = `
+      <div class="cardResult">
+        <div class="cardHeader">
+          <div>
+            <div class="rTitle">${escapeHtml(data.error_type || "Unknown error")}</div>
+            <div class="rSub">${escapeHtml(data.most_likely_cause || "")}</div>
+          </div>
+          ${confidenceBadge(data.confidence)}
+        </div>
+
+        <div class="section">
+          <div class="sectionTitle">Root cause summary</div>
+          <div class="text">${escapeHtml(data.root_cause_summary || "")}</div>
+        </div>
+
+        <div class="section">
+          <div class="sectionTitle">Suggested fixes</div>
+          ${fixesHtml}
+        </div>
+
+        <div class="section">
+          <div class="sectionTitle">Extracted error lines</div>
+          ${linesHtml}
+        </div>
+
+        <details class="details">
+          <summary>Raw JSON</summary>
+          <pre class="code">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+        </details>
+      </div>
+    `;
+
+    resultEl.innerHTML = html;
+  }
+
+  function renderText(msg) {
+    resultEl.className = "resultEmpty";
+    resultEl.textContent = msg;
   }
 
   btn.addEventListener("click", async () => {
     const text = (logEl.value || "").trim();
     if(!text){
-      resultEl.textContent = "Paste a log first.";
+      renderText("Paste a log first.");
       return;
     }
     btn.disabled = true;
     statusEl.textContent = "Analyzing...";
-    resultEl.textContent = "Working...";
+    renderText("Working...");
 
     try {
       const r = await fetch("/analyze", {
@@ -108,16 +226,20 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ log_text: text, source: sourceEl.value })
       });
+
       const data = await r.json();
+
       if(!r.ok){
-        resultEl.textContent = pretty(data);
+        // show error in a readable way
+        renderText("Request failed:\n\n" + JSON.stringify(data, null, 2));
         statusEl.textContent = "Request failed.";
         return;
       }
-      resultEl.textContent = pretty(data);
+
+      renderResult(data);
       statusEl.textContent = "Done.";
     } catch (e){
-      resultEl.textContent = "Network error: " + String(e);
+      renderText("Network error: " + String(e));
       statusEl.textContent = "Failed.";
     } finally {
       btn.disabled = false;
@@ -127,7 +249,7 @@
 
   clearBtn.addEventListener("click", () => {
     logEl.value = "";
-    resultEl.textContent = "Waiting for input...";
+    renderText("Waiting for input...");
     statusEl.textContent = "";
   });
 
