@@ -38,7 +38,7 @@ Local Kubernetes using Minikube
 
 Ready for GitOps / ArgoCD (next stage)
 
-🏗 Architecture
+## 🏗 Architecture
 ```sh
 User (Browser)
    |
