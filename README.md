@@ -2,7 +2,7 @@
 
 AI-powered log analysis platform with a full DevOps toolchain
 
-🚀 Overview
+## 🚀 **Overview**
 
 LogTester is a DevOps-oriented project that demonstrates how to build, test, package, and deploy an AI-assisted log analysis service using modern DevOps practices.
 
@@ -20,7 +20,7 @@ Extracted relevant log lines
 
 🎯 The main goal of this project is to demonstrate DevOps skills, not frontend complexity or ML research.
 
-🧠 Key Features
+## 🧠 **Key Features**
 
 FastAPI backend with structured JSON responses
 
