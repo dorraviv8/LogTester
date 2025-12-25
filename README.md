@@ -54,7 +54,7 @@ HTML / JS GUI  ──>  FastAPI (/analyze)
 ```
 GitHub → Jenkins CI → DockerHub → Helm → Kubernetes (Minikube)
 
-📂 Repository Structure
+## 📂 Repository Structure
 ```sh
 
 LogTester/
@@ -82,7 +82,7 @@ LogTester/
 ├── Jenkinsfile
 └── README.md
 ```
-🧪 API Endpoints
+## 🧪 API Endpoints
 | Method | Endpoint   | Description         |
 | ------ | ---------- | ------------------- |
 | GET    | `/`        | App metadata        |
@@ -90,7 +90,7 @@ LogTester/
 | POST   | `/analyze` | Analyze pasted logs |
 | GET    | `/docs`    | Swagger UI          |
 
-🖥 Web GUI
+## 🖥 Web GUI
 The web interface allows:
 
 Pasting large log outputs
@@ -113,7 +113,7 @@ Optional raw JSON toggle for advanced users
 
 The GUI is served directly by FastAPI as static content.
 
-🧩 CI – Jenkins Pipelineֿ
+## 🧩 CI – Jenkins Pipelineֿ
 The Jenkins pipeline performs:
 
 Checkout code from GitHub
@@ -136,7 +136,7 @@ No image is built if tests fail
 
 Every deployment is traceable to a Git commit
 
-🐳 Docker
+## 🐳 Docker
 The API is packaged as a Docker image:
 ```sh
 FROM python:3.12-slim
