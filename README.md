@@ -153,7 +153,7 @@ docker.io/<user>/logtester-api:<commit-sha>
 docker.io/<user>/logtester-api:latest
 ```
 
-☸ Kubernetes (Minikube)
+## ☸ Kubernetes (Minikube)
 Deployed to Kubernetes using Helm
 
 Includes:
@@ -176,7 +176,7 @@ Example local access:
 ```sh
 kubectl port-forward -n logtester svc/logtester-api 8000:8000
 ```
-📦 Helm Deployment
+## 📦 Helm Deployment
 Upgrade or install:
 ```sh
 
@@ -190,7 +190,7 @@ Rollout restart (when using latest):
 kubectl rollout restart deployment -n logtester -l app=logtester-api
 
 ```
-🔭 Observability (Current)
+## 🔭 Observability (Current)
 
 /health endpoint
 
@@ -198,7 +198,7 @@ Kubernetes liveness & readiness probes
 
 Structured application logs (stdout)
 
-🛣 Roadmap (Next Steps)
+## 🛣 Roadmap (Next Steps)
 
  Improve AI logic (LLM / prompt-based engine)
 
@@ -214,7 +214,7 @@ Structured application logs (stdout)
 
  Better error classification
 
- 🎯 Why This Project Matters
+ ## 🎯 Why This Project Matters
 
 This project demonstrates:
 
@@ -228,10 +228,3 @@ Debugging real DevOps issues (images, paths, pipelines)
 
 Production-style thinking, not just code
 
-Perfect as:
-
-GitHub portfolio project
-
-Interview discussion anchor
-
-Base for advanced GitOps work
