@@ -18,7 +18,7 @@ Confidence score
 
 Extracted relevant log lines
 
-🎯 The main goal of this project is to demonstrate DevOps skills, not frontend complexity or ML research.
+### 🎯 The main goal of this project is to demonstrate DevOps skills, not frontend complexity or ML research.
 
 ## 🧠 **Key Features**
 
