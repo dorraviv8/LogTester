@@ -1,6 +1,6 @@
 # **LogTester** 🧪🤖
 
-AI-powered log analysis platform with a full DevOps toolchain
+AI-powered log analysis platform with a full DevOps toolchain.
 
 ## 🚀 **Overview**
 
