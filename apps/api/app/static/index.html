@@ -9,36 +9,46 @@
     .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 18px 60px; }
     .title { font-size: 28px; font-weight: 700; letter-spacing: 0.2px; }
     .sub { margin-top: 6px; color: #aab1c5; }
+
     .grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
     @media (min-width: 900px){ .grid { grid-template-columns: 1.2fr 0.8fr; } }
+
     .card { background: #121a2a; border: 1px solid #202a40; border-radius: 14px; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
-    textarea { width: 100%; min-height: 260px; resize: vertical; border-radius: 12px; border: 1px solid #2a3550; background: #0e1525; color: #e7eaf3; padding: 12px; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 13px; }
     label { display: block; margin: 0 0 8px; color: #c9cfe3; font-weight: 600; }
+
+    textarea { width: 100%; min-height: 260px; resize: vertical; border-radius: 12px; border: 1px solid #2a3550; background: #0e1525; color: #e7eaf3; padding: 12px; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 13px; }
+
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
     select, button, input { border-radius: 12px; border: 1px solid #2a3550; background: #0e1525; color: #e7eaf3; padding: 10px 12px; }
     button { cursor: pointer; font-weight: 700; }
     button.primary { background: #2d6cff; border-color: #2d6cff; }
     button.primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
     .hint { color: #aab1c5; font-size: 13px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 12px; }
+
     .pill { display:inline-block; padding: 6px 10px; border-radius: 999px; background:#0e1525; border:1px solid #2a3550; color:#c9cfe3; font-size:12px; }
     .ok { color:#7ee787; }
     .bad { color:#ff7b72; }
 
-    /* Result UI */
+    /* Result styling */
     .resultWrap { display:flex; flex-direction:column; gap:12px; }
-    .section { background:#0e1525; border:1px solid #2a3550; border-radius:12px; padding:12px; }
-    .section h3 { margin:0 0 8px; font-size:14px; color:#cfe0ff; letter-spacing:0.2px; }
-    .kv { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .tag { font-size:12px; border:1px solid #2a3550; background:#0b1222; padding:6px 10px; border-radius:999px; color:#c9cfe3; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; }
-    ul { margin: 8px 0 0 18px; padding:0; }
-    li { margin: 6px 0; color:#e7eaf3; }
-    .muted { color:#aab1c5; }
-    .codebox { margin:0; white-space:pre-wrap; word-break:break-word; background:#070c16; border:1px solid #2a3550; border-radius:12px; padding:12px; font-size:13px; line-height:1.35; }
-    .toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-    .bar { height:10px; background:#0b1222; border:1px solid #2a3550; border-radius:999px; overflow:hidden; width: 180px; }
-    .bar > div { height:100%; background:#2d6cff; width: 0%; }
-    .small { font-size:12px; }
+    .kpiRow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .kpi { display:flex; gap:8px; align-items:center; padding: 8px 10px; border-radius: 12px; background:#0e1525; border:1px solid #2a3550; }
+    .kpi b { font-size:12px; color:#aab1c5; font-weight:700; }
+    .kpi span { font-size:12px; color:#e7eaf3; }
+
+    .section { background:#0e1525; border:1px solid #2a3550; border-radius: 12px; padding: 12px; }
+    .section h3 { margin:0 0 8px; font-size: 13px; letter-spacing:0.2px; color:#c9cfe3; }
+    .section p { margin:0; color:#e7eaf3; font-size: 13px; line-height: 1.45; }
+
+    .list { margin: 0; padding-left: 18px; }
+    .list li { margin: 6px 0; color:#e7eaf3; font-size: 13px; line-height: 1.45; }
+
+    details { background:#0e1525; border:1px solid #2a3550; border-radius: 12px; padding: 10px 12px; }
+    summary { cursor:pointer; color:#c9cfe3; font-weight:700; font-size:13px; }
+    pre { margin: 10px 0 0; white-space: pre-wrap; word-break: break-word; background: #0b1020; border: 1px solid #2a3550; border-radius: 12px; padding: 12px; font-size: 12px; line-height: 1.35; }
+    .actionsRow { display:flex; gap:10px; flex-wrap:wrap; }
   </style>
 </head>
 <body>
@@ -75,15 +85,16 @@
       </div>
 
       <div class="card">
-        <div class="toolbar">
-          <label style="margin:0;">Result</label>
-          <div class="row" style="margin:0;">
-            <button id="copyJsonBtn" class="small">Copy JSON</button>
-          </div>
+        <label>Result</label>
+
+        <div class="resultWrap" id="resultWrap">
+          <div class="hint" id="emptyState">Waiting for input...</div>
         </div>
 
-        <div id="result" class="resultWrap">
-          <div class="section muted">Waiting for input...</div>
+        <div class="row" style="margin-top:12px;">
+          <button id="copyJsonBtn" title="Copy raw JSON to clipboard">Copy JSON</button>
+          <button id="copyMdBtn" title="Copy as a readable Markdown">Copy Markdown</button>
+          <span class="hint" id="copyStatus"></span>
         </div>
       </div>
     </div>
@@ -94,16 +105,22 @@
   const sourceEl = document.getElementById("source");
   const btn = document.getElementById("analyzeBtn");
   const clearBtn = document.getElementById("clearBtn");
-  const resultEl = document.getElementById("result");
+
+  const resultWrap = document.getElementById("resultWrap");
+  const emptyState = document.getElementById("emptyState");
+
   const statusEl = document.getElementById("status");
   const apiHealthEl = document.getElementById("apiHealth");
-  const copyJsonBtn = document.getElementById("copyJsonBtn");
 
-  let lastJson = null;
+  const copyJsonBtn = document.getElementById("copyJsonBtn");
+  const copyMdBtn = document.getElementById("copyMdBtn");
+  const copyStatus = document.getElementById("copyStatus");
+
+  let lastResponse = null;
 
   async function checkHealth(){
     try {
-      const r = await fetch("/health");
+      const r = await fetch("/health", { cache: "no-store" });
       if(!r.ok) throw new Error("bad status");
       const j = await r.json();
       apiHealthEl.textContent = j.status || "ok";
@@ -114,83 +131,135 @@
     }
   }
 
-  function escapeHtml(s){
-    return String(s)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  function esc(s){
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function clearResult(){
+    resultWrap.innerHTML = "";
+    emptyState.style.display = "block";
+    lastResponse = null;
+    copyStatus.textContent = "";
+  }
+
+  function kpi(label, value){
+    const el = document.createElement("div");
+    el.className = "kpi";
+    el.innerHTML = `<b>${esc(label)}</b><span>${esc(value)}</span>`;
+    return el;
+  }
+
+  function section(title, bodyHtml){
+    const el = document.createElement("div");
+    el.className = "section";
+    el.innerHTML = `<h3>${esc(title)}</h3>${bodyHtml}`;
+    return el;
   }
 
   function renderResult(data){
-    const errorType = data?.error_type ?? "unknown";
-    const summary = data?.root_cause_summary ?? "";
-    const cause = data?.most_likely_cause ?? "";
-    const fixes = Array.isArray(data?.suggested_fixes) ? data.suggested_fixes : [];
-    const conf = typeof data?.confidence === "number" ? data.confidence : null;
-    const lines = Array.isArray(data?.extracted_error_lines) ? data.extracted_error_lines : [];
+    lastResponse = data;
+    emptyState.style.display = "none";
+    resultWrap.innerHTML = "";
 
-    const confPct = conf === null ? null : Math.round(conf * 100);
+    const kpiRow = document.createElement("div");
+    kpiRow.className = "kpiRow";
+    kpiRow.appendChild(kpi("Error Type", data.error_type ?? "unknown"));
+    kpiRow.appendChild(kpi("Confidence", (data.confidence ?? 0).toFixed ? (data.confidence).toFixed(2) : String(data.confidence ?? "")));
+    resultWrap.appendChild(kpiRow);
 
-    const fixesHtml = fixes.length
-      ? `<ul>${fixes.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`
-      : `<div class="muted">No fixes suggested.</div>`;
+    resultWrap.appendChild(
+      section("Summary (What happened?)", `<p>${esc(data.root_cause_summary || "—")}</p>`)
+    );
 
-    const linesHtml = lines.length
-      ? `<pre class="codebox mono">${escapeHtml(lines.join("\n"))}</pre>`
-      : `<div class="muted">No error lines extracted.</div>`;
+    resultWrap.appendChild(
+      section("Most likely cause (Why?)", `<p>${esc(data.most_likely_cause || "—")}</p>`)
+    );
 
-    const confHtml = confPct === null
-      ? `<span class="muted">unknown</span>`
-      : `
-        <div class="kv">
-          <div class="tag">Confidence: <b>${confPct}%</b></div>
-          <div class="bar" title="${confPct}%"><div style="width:${confPct}%;"></div></div>
-          <span class="muted small">Higher = more certain classification</span>
-        </div>
+    const fixes = Array.isArray(data.suggested_fixes) ? data.suggested_fixes : [];
+    if(fixes.length){
+      const items = fixes.map(x => `<li>${esc(x)}</li>`).join("");
+      resultWrap.appendChild(
+        section("Action items (What to do next)", `<ul class="list">${items}</ul>`)
+      );
+    } else {
+      resultWrap.appendChild(
+        section("Action items (What to do next)", `<p>—</p>`)
+      );
+    }
+
+    const lines = Array.isArray(data.extracted_error_lines) ? data.extracted_error_lines : [];
+    if(lines.length){
+      const det = document.createElement("details");
+      det.innerHTML = `
+        <summary>Extracted error lines (${lines.length})</summary>
+        <pre>${esc(lines.join("\n"))}</pre>
       `;
+      resultWrap.appendChild(det);
+    }
 
-    resultEl.innerHTML = `
-      <div class="section">
-        <div class="kv">
-          <span class="tag">Type: <b>${escapeHtml(errorType)}</b></span>
-        </div>
-        <div style="margin-top:10px;">${confHtml}</div>
-      </div>
-
-      <div class="section">
-        <h3>Explanation (What happened)</h3>
-        <div>${escapeHtml(summary || "—")}</div>
-      </div>
-
-      <div class="section">
-        <h3>Most likely cause</h3>
-        <div>${escapeHtml(cause || "—")}</div>
-      </div>
-
-      <div class="section">
-        <h3>What to do next (Suggested fixes)</h3>
-        ${fixesHtml}
-      </div>
-
-      <div class="section">
-        <h3>Extracted error lines</h3>
-        <div class="muted small">These are the lines LogTester thinks are the most relevant.</div>
-        <div style="margin-top:10px;">${linesHtml}</div>
-      </div>
+    const raw = document.createElement("details");
+    raw.innerHTML = `
+      <summary>Raw JSON</summary>
+      <pre>${esc(JSON.stringify(data, null, 2))}</pre>
     `;
+    resultWrap.appendChild(raw);
   }
+
+  function toMarkdown(d){
+    const fixes = Array.isArray(d.suggested_fixes) ? d.suggested_fixes : [];
+    const lines = Array.isArray(d.extracted_error_lines) ? d.extracted_error_lines : [];
+    return [
+      `# LogTester Result`,
+      ``,
+      `**Error Type:** ${d.error_type ?? "unknown"}`,
+      `**Confidence:** ${d.confidence ?? "—"}`,
+      ``,
+      `## Summary`,
+      `${d.root_cause_summary ?? "—"}`,
+      ``,
+      `## Most likely cause`,
+      `${d.most_likely_cause ?? "—"}`,
+      ``,
+      `## Action items`,
+      fixes.length ? fixes.map(x => `- ${x}`).join("\n") : `- —`,
+      ``,
+      `## Extracted error lines`,
+      lines.length ? "```text\n" + lines.join("\n") + "\n```" : "—"
+    ].join("\n");
+  }
+
+  async function copyText(txt){
+    await navigator.clipboard.writeText(txt);
+    copyStatus.textContent = "Copied.";
+    setTimeout(() => copyStatus.textContent = "", 1500);
+  }
+
+  copyJsonBtn.addEventListener("click", async () => {
+    if(!lastResponse){ copyStatus.textContent = "Nothing to copy yet."; return; }
+    try { await copyText(JSON.stringify(lastResponse, null, 2)); }
+    catch(e){ copyStatus.textContent = "Copy failed."; }
+  });
+
+  copyMdBtn.addEventListener("click", async () => {
+    if(!lastResponse){ copyStatus.textContent = "Nothing to copy yet."; return; }
+    try { await copyText(toMarkdown(lastResponse)); }
+    catch(e){ copyStatus.textContent = "Copy failed."; }
+  });
 
   btn.addEventListener("click", async () => {
     const text = (logEl.value || "").trim();
     if(!text){
-      resultEl.innerHTML = `<div class="section">Paste a log first.</div>`;
+      clearResult();
+      emptyState.textContent = "Paste a log first.";
       return;
     }
+
     btn.disabled = true;
     statusEl.textContent = "Analyzing...";
-    resultEl.innerHTML = `<div class="section muted">Working...</div>`;
+    clearResult();
+    emptyState.textContent = "Working...";
 
     try {
       const r = await fetch("/analyze", {
@@ -198,12 +267,17 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ log_text: text, source: sourceEl.value })
       });
-
       const data = await r.json();
-      lastJson = data;
 
       if(!r.ok){
-        resultEl.innerHTML = `<div class="section"><h3>Request failed</h3><pre class="codebox mono">${escapeHtml(JSON.stringify(data, null, 2))}</pre></div>`;
+        renderResult({
+          error_type: "request_failed",
+          root_cause_summary: "Request failed.",
+          most_likely_cause: "The API returned a non-2xx response.",
+          suggested_fixes: ["Check the API logs.", "Verify /analyze is reachable and returns valid JSON."],
+          confidence: 0.0,
+          extracted_error_lines: [JSON.stringify(data, null, 2)]
+        });
         statusEl.textContent = "Request failed.";
         return;
       }
@@ -211,8 +285,14 @@
       renderResult(data);
       statusEl.textContent = "Done.";
     } catch (e){
-      lastJson = null;
-      resultEl.innerHTML = `<div class="section"><h3>Network error</h3><div class="mono">${escapeHtml(String(e))}</div></div>`;
+      renderResult({
+        error_type: "network_error",
+        root_cause_summary: "Network error while calling /analyze.",
+        most_likely_cause: String(e),
+        suggested_fixes: ["Make sure the API is running.", "Try refreshing and retry."],
+        confidence: 0.0,
+        extracted_error_lines: []
+      });
       statusEl.textContent = "Failed.";
     } finally {
       btn.disabled = false;
@@ -222,29 +302,14 @@
 
   clearBtn.addEventListener("click", () => {
     logEl.value = "";
-    lastJson = null;
-    resultEl.innerHTML = `<div class="section muted">Waiting for input...</div>`;
+    clearResult();
+    emptyState.textContent = "Waiting for input...";
     statusEl.textContent = "";
   });
 
-  copyJsonBtn.addEventListener("click", async () => {
-    if(!lastJson){
-      statusEl.textContent = "Nothing to copy yet.";
-      setTimeout(() => statusEl.textContent = "", 1500);
-      return;
-    }
-    try{
-      await navigator.clipboard.writeText(JSON.stringify(lastJson, null, 2));
-      statusEl.textContent = "Copied JSON.";
-    } catch(e){
-      statusEl.textContent = "Copy failed.";
-    } finally {
-      setTimeout(() => statusEl.textContent = "", 1500);
-    }
-  });
-
   checkHealth();
+  clearResult();
+  emptyState.textContent = "Waiting for input...";
 </script>
 </body>
 </html>
-
