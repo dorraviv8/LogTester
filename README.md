@@ -8,15 +8,15 @@ LogTester is a DevOps-oriented project that demonstrates how to build, test, pac
 
 The application allows users to paste raw log output (Jenkins, Kubernetes, Docker, Python, or generic logs) and receive:
 
-A clear explanation of the error
+A clear explanation of the error.
 
-The most likely root cause
+The most likely root cause.
 
-Actionable remediation steps
+Actionable remediation steps.
 
-Confidence score
+Confidence score.
 
-Extracted relevant log lines
+Extracted relevant log lines.
 
 ### 🎯 The main goal of this project is to demonstrate DevOps skills, not frontend complexity or ML research.
 
